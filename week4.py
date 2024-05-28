@@ -6,8 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # Load data from CSV (adjust the path accordingly)
+file_path = 'C:\\Users\\ashik\\OneDrive\\Desktop\\ID3\\tennis.csv'  # Adjust the path if necessary
+
 try:
-    data = pd.read_csv('C:\\Users\\ashik\\OneDrive\\Desktop\\ID3\\tennis.csv')
+    data = pd.read_csv(file_path)
     print("The first 5 values of data are:\n", data.head())
 except FileNotFoundError as e:
     print(f"Error: {e}. Please check the file path and ensure the file exists.")
