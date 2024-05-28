@@ -3,7 +3,7 @@ import pandas as pd
 
 def load_data():
     try:
-        return pd.read_csv('C:\\Users\\ashik\\OneDrive\\Desktop\\week6\\corona.csv')
+        return pd.read_csv("coronadata.csv")
     except FileNotFoundError:
         st.error("Error: Dataset file not found.")
         return None
