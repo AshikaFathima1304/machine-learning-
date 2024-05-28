@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
 
-def load_data():
+def load_data(file):
     try:
-        return pd.read_csv("coronadata.csv")
+        data = pd.read_csv(file)
+        return data
     except FileNotFoundError:
         st.error("Error: Dataset file not found.")
+        return None
+    except Exception as e:
+        st.error(f"Error: {e}")
         return None
 
 def preprocess_data(data):
@@ -17,26 +21,30 @@ def preprocess_data(data):
 
 def main():
     st.title("CORONA Infection Diagnosis")
-    
-    # Load data
-    data = load_data()
-    if data is not None:
-        st.subheader("Dataset")
-        st.write(data)
-        
-        # Checkbox to toggle browsing mode
-        browse_data = st.checkbox("Browse Dataset")
-        
-        if browse_data:
-            # Show a slider for selecting the number of rows to display
-            num_rows = st.slider("Number of Rows", min_value=1, max_value=len(data), value=10)
-            st.write(data.head(num_rows))
 
-        # Preprocess data
-        data = preprocess_data(data)
-        st.subheader("Preprocessed Dataset")
-        st.write(data)
-    
+    # File uploader
+    uploaded_file = st.file_uploader("Upload Dataset (CSV)", type="csv")
+
+    if uploaded_file is not None:
+        # Load data
+        data = load_data(uploaded_file)
+        if data is not None:
+            st.subheader("Dataset")
+            st.write(data)
+            
+            # Checkbox to toggle browsing mode
+            browse_data = st.checkbox("Browse Dataset")
+            
+            if browse_data:
+                # Show a slider for selecting the number of rows to display
+                num_rows = st.slider("Number of Rows", min_value=1, max_value=len(data), value=10)
+                st.write(data.head(num_rows))
+
+            # Preprocess data
+            data = preprocess_data(data)
+            st.subheader("Preprocessed Dataset")
+            st.write(data)
+        
     # User input for symptoms
     st.subheader("Enter Symptoms")
     fever = st.checkbox("Fever")
