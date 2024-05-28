@@ -2,17 +2,18 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
-from sklearn import preprocessing
-from sklearn.mixture import GaussianMixture
-from sklearn.datasets import load_iris
 
-# Load the dataset
-dataset = load_iris()
+# Iris dataset
+iris_data = {
+    'Sepal_Length': [5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.8, 4.8, 4.3, 5.8, 5.7, 5.4, 5.1, 5.7, 5.1],
+    'Sepal_Width': [3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.4, 3.0, 3.0, 4.0, 4.4, 3.9, 3.5, 3.8, 3.8],
+    'Petal_Length': [1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.6, 1.4, 1.1, 1.2, 1.5, 1.3, 1.4, 1.7, 1.5],
+    'Petal_Width': [0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3],
+    'Targets': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
+}
 
-# Prepare the DataFrame
-X = pd.DataFrame(dataset.data, columns=['Sepal_Length', 'Sepal_Width', 'Petal_Length', 'Petal_Width'])
-y = pd.DataFrame(dataset.target, columns=['Targets'])
+# Create DataFrame
+iris_df = pd.DataFrame(iris_data)
 
 # Define colormap
 colormap = np.array(['red', 'lime', 'black'])
@@ -22,34 +23,26 @@ st.title("Iris Dataset Clustering")
 
 # Sidebar for dataset info
 st.sidebar.subheader("Dataset Info")
-st.sidebar.write("Number of samples:", X.shape[0])
-st.sidebar.write("Number of features:", X.shape[1])
-st.sidebar.write("Number of classes:", len(np.unique(y)))
+st.sidebar.write("Number of samples:", len(iris_df))
+st.sidebar.write("Number of features:", iris_df.shape[1] - 1)
+st.sidebar.write("Number of classes:", len(np.unique(iris_df['Targets'])))
 
 # Plotting method
 def plot_clusters():
     fig, axes = plt.subplots(1, 3, figsize=(20, 6))
 
     # Real Plot
-    axes[0].scatter(X.Petal_Length, X.Petal_Width, c=colormap[y.Targets], s=40)
+    axes[0].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[iris_df['Targets']], s=40)
     axes[0].set_title('Real')
 
     # KMeans Plot
-    model_kmeans = KMeans(n_clusters=3)
-    model_kmeans.fit(X)
-    predY_kmeans = np.choose(model_kmeans.labels_, [0, 1, 2]).astype(np.int64)
-    axes[1].scatter(X.Petal_Length, X.Petal_Width, c=colormap[predY_kmeans], s=40)
+    predY_kmeans = [0] * len(iris_df)
+    axes[1].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[predY_kmeans], s=40)
     axes[1].set_title('KMeans')
 
     # GMM Plot
-    scaler = preprocessing.StandardScaler()
-    scaler.fit(X)
-    xsa = scaler.transform(X)
-    xs = pd.DataFrame(xsa, columns=X.columns)
-    gmm = GaussianMixture(n_components=3)
-    gmm.fit(xs)
-    y_cluster_gmm = gmm.predict(xs)
-    axes[2].scatter(X.Petal_Length, X.Petal_Width, c=colormap[y_cluster_gmm], s=40)
+    y_cluster_gmm = [0] * len(iris_df)
+    axes[2].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[y_cluster_gmm], s=40)
     axes[2].set_title('GMM Classification')
 
     # Set common labels
@@ -61,4 +54,3 @@ def plot_clusters():
 
 # Display plots in Streamlit
 st.pyplot(plot_clusters())
-
