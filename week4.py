@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # Load data from CSV (adjust the path accordingly)
-data = pd.read_csv('C:\\Users\\ashik\\OneDrive\\Desktop\\ID3\\tennis.csv')
+data = pd.read_csv('C:\\Users\\ashik\\OneDrive\\Desktop\\NAIVE BAYESIAN CLASSIFIER\\tennis.csv')
 print("The first 5 values of data are:\n", data.head())
 
 # Obtain Train data and Train output
