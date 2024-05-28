@@ -20,13 +20,22 @@ def main():
     
     # Load data
     data = load_data()
-    st.subheader("Dataset")
-    st.write(data)
-    
-    # Preprocess data
-    data = preprocess_data(data)
-    st.subheader("Preprocessed Dataset")
-    st.write(data)
+    if data is not None:
+        st.subheader("Dataset")
+        st.write(data)
+        
+        # Checkbox to toggle browsing mode
+        browse_data = st.checkbox("Browse Dataset")
+        
+        if browse_data:
+            # Show a slider for selecting the number of rows to display
+            num_rows = st.slider("Number of Rows", min_value=1, max_value=len(data), value=10)
+            st.write(data.head(num_rows))
+
+        # Preprocess data
+        data = preprocess_data(data)
+        st.subheader("Preprocessed Dataset")
+        st.write(data)
     
     # User input for symptoms
     st.subheader("Enter Symptoms")
