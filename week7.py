@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Iris dataset
 iris_data = {
@@ -27,30 +26,11 @@ st.sidebar.write("Number of samples:", len(iris_df))
 st.sidebar.write("Number of features:", iris_df.shape[1] - 1)
 st.sidebar.write("Number of classes:", len(np.unique(iris_df['Targets'])))
 
-# Plotting method
-def plot_clusters():
-    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+# Display the dataset
+st.write("Iris Dataset:", iris_df)
 
-    # Real Plot
-    axes[0].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[iris_df['Targets']], s=40)
-    axes[0].set_title('Real')
-
-    # KMeans Plot
-    predY_kmeans = [0] * len(iris_df)
-    axes[1].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[predY_kmeans], s=40)
-    axes[1].set_title('KMeans')
-
-    # GMM Plot
-    y_cluster_gmm = [0] * len(iris_df)
-    axes[2].scatter(iris_df['Petal_Length'], iris_df['Petal_Width'], c=colormap[y_cluster_gmm], s=40)
-    axes[2].set_title('GMM Classification')
-
-    # Set common labels
-    for ax in axes:
-        ax.set_xlabel('Petal Length')
-        ax.set_ylabel('Petal Width')
-
-    return fig
-
-# Display plots in Streamlit
-st.pyplot(plot_clusters())
+# Display placeholders for clustering results
+st.write("KMeans Clustering Results:")
+st.dataframe(iris_df[['Petal_Length', 'Petal_Width']])
+st.write("GMM Clustering Results:")
+st.dataframe(iris_df[['Petal_Length', 'Petal_Width']])
