@@ -5,8 +5,11 @@ import pandas as pd
 @st.cache
 def load_data():
     # Load your data here, for example:
-    # data = pd.read_csv("your_data.csv")
-    pass
+    data = pd.DataFrame({
+        'A': [1, 2, 3, 4, 5],
+        'B': [6, 7, 8, 9, 10]
+    })
+    return data
 
 def main():
     st.title("Your Streamlit App")
